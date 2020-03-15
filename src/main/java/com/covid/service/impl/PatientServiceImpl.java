@@ -14,12 +14,10 @@ import java.util.Optional;
 @Transactional
 public class PatientServiceImpl implements PatientService {
 
-    private PatientRepository patientRepository;
-
-    public PatientServiceImpl(){}
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository){
+    public PatientServiceImpl(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
     }
 
