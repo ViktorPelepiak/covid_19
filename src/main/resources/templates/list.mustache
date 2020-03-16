@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>Patients</h1>
+<table>
+    <tr><th>FirstName</th><th>LastName</th><th>DateOfBirth</th><th>Status</th><th></th><th></th></tr>
+    {{#patients}}
+        <tr>
+            <td>{{person.firstName}}</td>
+            <td>{{person.lastName}}</td>
+            <td>{{person.dateOfBirth.day}}/{{person.dateOfBirth.month}}/{{person.dateOfBirth.year}}</td>
+            <td>{{status}}</td>
+            <td>
+                <form action="/patient/update">
+                    <input type="number" value="{{id}}" name="idForUpdate" hidden readonly>
+                    <input type="submit" value="update">
+                </form>
+            </td>
+            <td>
+                <form action="/patient/delete" method="post">
+                    <input type="number" value="{{id}}"  name="idForDelete" hidden readonly>
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
+    {{/patients}}
+</table>
+<a href="/patient/add">Add new patient</a>
+<br>
+<h5>Lethal statistic (by age)</h5>
+<table>
+    <tr>
+        <th><20</th><th>20-40</th><th>40-60</th><th>60-80</th><th>>80</th>
+    </tr>
+    <tr>
+        <th>{{ILess20I}}</th><th>{{I20_40I}}</th><th>{{I40_60I}}</th><th>{{I60_80I}}</th><th>{{IMore80I}}</th>
+    </tr>
+</table>
+
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<header>
+    <meta charset="UTF-8">
+</header>
+<body>
+<form action="/patient/update" method="post">
+    <input type="text" name="idForUpdate" value="{{id}}" readonly hidden>
+    <table>
+        <tr>
+            <td>First name</td>
+            <td><input type="text" name="fName" value="{{patient.person.firstName}}"></td>
+        </tr>
+        <tr>
+            <td>Last name</td>
+            <td><input type="text" name="lName" value="{{patient.person.lastName}}"></td>
+        </tr>
+        <tr>
+            <td>Date of birth</td>
+            <td><input type="date" name="dob" value="{{patient.person.dateOfBirth}}"></td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <select name="status" id="status">
+                    {{#isLethal}}
+                        <option value="CURED">CURED</option>
+                        <option value="LETHAL" selected>LETHAL</option>
+                    {{/isLethal}}
+                    {{^isLethal}}
+                        <option value="CURED" selected>CURED</option>
+                        <option value="LETHAL">LETHAL</option>
+                    {{/isLethal}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Update patient"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
