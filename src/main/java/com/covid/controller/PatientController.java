@@ -12,7 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.Map;
 
-@RequestMapping("/patient")
+@RequestMapping("/patients")
 @Controller
 public class PatientController {
 
