@@ -1,10 +1,7 @@
 package com.covid.repository;
 
 import com.covid.entity.Patient;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface PatientRepository extends JpaRepository<Patient, Long> {
-
+public interface PatientRepository extends CrudRepository<Patient, Long> {
 }

@@ -22,7 +22,7 @@ public class Patient implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Person person;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Status status;
 
     public Patient(){
@@ -31,7 +31,7 @@ public class Patient implements Serializable {
         status = null;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
