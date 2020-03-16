@@ -1,36 +1,40 @@
 package com.covid.controller;
 
 import com.covid.dto.PatientDto;
-import com.covid.entity.Patient;
 import com.covid.entity.enums.Status;
-import com.covid.service.PatientService;
+import com.covid.repository.PatientRepository;
 import com.covid.util.PatientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Map;
 
-@RestController
-@RequestMapping("/")
-public class TestController {
+@Controller
+public class StartController {
 
-    private final PatientService patientService;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public TestController(PatientService patientService){
-        this.patientService = patientService;
+    public StartController(PatientRepository patientRepository){
+        this.patientRepository = patientRepository;
     }
 
-    @GetMapping("hello")
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("/hello")
     public String hello() {
         PatientDto patient = new PatientDto()
                 .setFirstName("testFN")
                 .setLastName("testLN")
                 .setDateOfBirth(LocalDate.now())
                 .setStatus(Status.CURED);
-        patientService.save(PatientMapper.patientFromDto(patient));
+        patientRepository.save(PatientMapper.patientFromDto(patient));
 
         return "Hello, World!";
     }

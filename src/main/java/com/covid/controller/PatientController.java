@@ -1,39 +1,92 @@
 package com.covid.controller;
 
-import com.covid.dto.PatientDto;
 import com.covid.entity.Patient;
-import com.covid.service.PatientService;
-import com.covid.util.PatientMapper;
+import com.covid.entity.Person;
+import com.covid.entity.enums.Status;
+import com.covid.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Map;
+
 @RequestMapping("/patient")
+@Controller
 public class PatientController {
 
-    private final PatientService patientService;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public PatientController(PatientService patientService){
-        this.patientService = patientService;
+    public PatientController(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    @GetMapping
+    public String getAllPatients(Map<String, Object> data) {
+        Iterable<Patient> patients = patientRepository.findAll();
+        data.put("patients", patients);
+        return "list";
+    }
+
+    @GetMapping("/add")
+    public String pageForAdd(Map<String, Object> data){
+        return "addPage";
     }
 
     @PostMapping("/add")
-    public ResponseEntity addNewPatient(@RequestBody PatientDto patient){
-        patientService.save(PatientMapper.patientFromDto(patient));
-        return new ResponseEntity(HttpStatus.CREATED);
+    public String addNewPatient(
+            @RequestParam String fName,
+            @RequestParam String lName,
+            @RequestParam String dob,
+            @RequestParam String status,
+            Map<String, Object> data) {
+        Patient patient = new Patient()
+                .setPerson(new Person()
+                        .setFirstName(fName)
+                        .setLastName(lName)
+                        .setDateOfBirth(LocalDate.parse(dob)))
+                .setStatus(Status.valueOf(status));
+        patientRepository.save(patient);
+        Iterable<Patient> patients = patientRepository.findAll();
+        data.put("patients", patients);
+        return "list";
+    }
+
+    @GetMapping("/update")
+    public String getUpdatePage(@RequestParam String idForUpdate, Map<String, Object> data){
+        Patient patient = patientRepository.findById(Long.valueOf(idForUpdate)).orElseThrow(EntityNotFoundException::new);
+        data.put("id", idForUpdate);
+        data.put("patient", patient);
+        data.put("isLethal", patient.getStatus().equals(Status.LETHAL));
+        return "update";
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient){
-        return new ResponseEntity<>(patientService.update(patient), HttpStatus.OK);
+    public String updatePatient(
+            @RequestParam String idForUpdate,
+            @RequestParam String fName,
+            @RequestParam String lName,
+            @RequestParam String dob,
+            @RequestParam String status,
+            Map<String, Object> data) {
+        Patient patient = patientRepository.findById(Long.valueOf(idForUpdate)).orElseThrow(EntityNotFoundException::new);
+        patient.getPerson().setFirstName(fName);
+        patient.getPerson().setLastName(lName);
+        patient.getPerson().setDateOfBirth(LocalDate.parse(dob));
+        patient.setStatus(Status.valueOf(status));
+        patientRepository.save(patient);
+        Iterable<Patient> patients = patientRepository.findAll();
+        data.put("patients", patients);
+        return "list";
     }
 
-    @DeleteMapping()
-    public ResponseEntity deletePatient(@RequestParam Long id){
-        patientService.deleteById(id);
-        return new ResponseEntity(HttpStatus.OK);
+    @PostMapping("/delete")
+    public String deletePatient(@RequestParam String idForDelete, Map<String, Object> data) {
+        patientRepository.deleteById(Long.valueOf(idForDelete));
+        Iterable<Patient> patients = patientRepository.findAll();
+        data.put("patients", patients);
+        return "list";
     }
 }
