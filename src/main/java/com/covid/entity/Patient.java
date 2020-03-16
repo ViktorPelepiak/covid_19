@@ -1,12 +1,13 @@
 package com.covid.entity;
 
-import com.covid.dto.PatientDto;
 import com.covid.entity.enums.Status;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "patients")
@@ -51,5 +52,9 @@ public class Patient implements Serializable {
     public Patient setStatus(Status status) {
         this.status = status;
         return this;
+    }
+
+    public int calculateAge(){
+        return Period.between(person.getDateOfBirth(), LocalDate.now()).getYears();
     }
 }
