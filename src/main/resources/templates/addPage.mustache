@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<header>
+    <meta charset="UTF-8">
+</header>
+<body>
+<form action="/patient/add" method="post">
+    <table>
+        <tr>
+            <td>First name</td>
+            <td><input type="text" name="fName"></td>
+        </tr>
+        <tr>
+            <td>Last name</td>
+            <td><input type="text" name="lName"></td>
+        </tr>
+        <tr>
+            <td>Date of birth</td>
+            <td><input type="date" name="dob"></td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <select name="status" id="status">
+                    <option value="CURED">CURED</option>
+                    <option value="LETHAL">LETHAL</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Add patient">
+</form>
+</body>
+</html>
